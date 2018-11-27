@@ -62,7 +62,7 @@ public class BindViewProcessor extends AbstractProcessor {
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         //获取目标注解
         Set<? extends Element> elementsAnnotatedWith = roundEnv.getElementsAnnotatedWith(BindViewActivity.class);
-        if (null == elementsAnnotatedWith) {
+        if (null == elementsAnnotatedWith || elementsAnnotatedWith.isEmpty()) {
             return false;
         }
         for (Element element : elementsAnnotatedWith) {
@@ -81,7 +81,6 @@ public class BindViewProcessor extends AbstractProcessor {
                             //设置参数
                             .addParameter(ClassName.get(typeElement.asType()), "activity")
                             .addStatement("this.mActivity = activity");
-            //生成一个静态方法
             MethodSpec.Builder findViewById = null;
             MethodSpec.Builder viewClicks = null;
             MethodSpec.Builder viewClick = null;
@@ -109,7 +108,7 @@ public class BindViewProcessor extends AbstractProcessor {
                     if (null != parameters && parameters.size() > 1) {
                         throw new RuntimeException("暂时只支持无参或者一个参数");
                     } else if (null != parameters && parameters.size() == 1) {
-                        if(!"android.view.View".equals(parameters.get(0).asType().toString())){
+                        if (!"android.view.View".equals(parameters.get(0).asType().toString())) {
                             throw new RuntimeException("请检查入参是不是 android.view.View ");
                         }
                     }
@@ -138,7 +137,7 @@ public class BindViewProcessor extends AbstractProcessor {
                     if (null != parameters && parameters.size() > 1) {
                         throw new RuntimeException("暂时只支持无参或者一个参数");
                     } else if (null != parameters && parameters.size() == 1) {
-                        if(!"android.view.View".equals(parameters.get(0).asType().toString())){
+                        if (!"android.view.View".equals(parameters.get(0).asType().toString())) {
                             throw new RuntimeException("请检查入参是不是 android.view.View ");
                         }
                     }
@@ -154,7 +153,8 @@ public class BindViewProcessor extends AbstractProcessor {
                             "        });", lViewClick.value(), format));
                 }
             }
-            TypeSpec.Builder typeSpecBuilder = TypeSpec.classBuilder(typeElement.getSimpleName()+"$$BindView")
+            //创建一个以$$BindView结尾的协助类
+            TypeSpec.Builder typeSpecBuilder = TypeSpec.classBuilder(typeElement.getSimpleName() + "$$BindView")
                     .addField(fieldSpec)
                     .addModifiers(Modifier.PUBLIC, Modifier.FINAL);
             //如果findViewById方法存在，添加

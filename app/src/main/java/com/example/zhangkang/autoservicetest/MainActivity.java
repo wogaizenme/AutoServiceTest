@@ -12,8 +12,10 @@ import com.example.anotation.ViewClick;
 import com.example.anotation.ViewClicks;
 import com.example.apt.BindViewHelper;
 
+import self.zhangkang.base.BaseActivity;
+
 @BindViewActivity
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
     @BindView(R.id.button1)
     Button mButton1;
     @BindView(R.id.button2)

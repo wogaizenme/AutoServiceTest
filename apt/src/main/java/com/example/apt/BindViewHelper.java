@@ -4,8 +4,9 @@ import java.lang.reflect.Constructor;
 
 /**
  * Created on 2018/9/30
- * Title:
- * Description:
+ * Title: 帮助完成绑定View操作
+ * Description: 在Activity的setContentView方法之后调用，自动生成一个协助类，帮助完成Activity的初始化
+ * 工作
  *
  * @author Android-张康
  * update 2018/9/30
